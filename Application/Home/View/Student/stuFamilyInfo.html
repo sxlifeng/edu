@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8"/>
+<title>学生家庭信息</title>
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/Js/easyui/themes/default/easyui.css"/>
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/Js/easyui/themes/icon.css"/>
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/my.css"/>
+<script type="text/javascript" src="__PUBLIC__/Js/easyui/jquery.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/Js/easyui/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/Js/easyui/locale/easyui-lang-zh_CN.js"></script>
+</head>
+<body>
+	<table id="family_info" class="easyui-datagrid" title="家庭成员信息" style="width:100%;height:auto"
+			data-options="
+				iconCls: 'icon-edit',
+				fitColumns:true,
+				rownumbers:true,
+				singleSelect: true,
+				toolbar: '#toolbar',
+				url: '__URL__/stuFamilyJson',
+				method: 'get'				
+			">
+		<thead>
+			<tr>
+				<th data-options="field:'id',align:'center',hidden:true">id</th>
+				<th data-options="field:'folkName',align:'center',width:30">成员姓名</th>
+				<th data-options="field:'folkRelation',align:'center',width:30">与本人关系</th>
+				<th data-options="field:'folkCompany',width:50">工作单位</th>
+				<th data-options="field:'folkPosition',align:'center',width:30">职务</th>
+				<th data-options="field:'folkTel',align:'center',width:30">联系电话</th>
+				<th data-options="field:'folkAddress',align:'left',width:60">通信地址</th>
+			</tr>
+		</thead>
+	</table>
+
+	<div id="toolbar" style="height:auto">
+		<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="addFolk()">添加</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="editFolk()">修改</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" onclick="delFolk()">删除</a>
+	</div>
+	
+	<div id="dlg" class="easyui-dialog" style="width:400px;height:320px;padding:10px 20px" closed="true" buttons="#dlg-buttons">
+		<div class="ftitle">成员信息</div>
+		<form id="fm" method="post" action='__URL__/addFolk'>
+			<div class="fitem">
+				<label>姓名:</label>
+				<input name="folkName" class="easyui-textbox" required="true" />
+			</div>
+			<div class="fitem">
+				<label>与本人关系:</label>
+				<input name="folkRelation" class="easyui-combobox" data-options="
+								valueField:'value',
+								textField:'text',
+								method:'get',
+								data:[{'value':'父子','text':'父子'},{'value':'母子','text':'母子'},{'value':'兄弟','text':'兄弟'},{'value':'兄妹','text':'兄妹'},{'value':'姐妹','text':'姐妹'},{'value':'姐弟','text':'姐弟'},{'value':'其他','text':'其他'}],
+								required:true,
+								panelHeight:'auto',
+								editable:false
+							" required="true"/>
+			</div>
+			<div class="fitem">
+				<label>工作单位:</label>
+				<input name="folkCompany" class="easyui-textbox" required="true" />
+			</div>
+			<div class="fitem">
+				<label>职务:</label>
+				<input name="folkPosition" class="easyui-textbox" required="true" />
+			</div>
+			<div class="fitem">
+				<label>联系电话:</label>
+				<input name="folkTel" class="easyui-textbox" required="true"/>
+			</div>
+			<div class="fitem">
+				<label>通信地址:</label>
+				<input name="folkAddress" class="easyui-textbox" required="true" />
+			</div>
+		</form>
+	</div>
+	<div id="dlg-buttons">
+		<a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveFolk()" style="width:90px">保存</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')" style="width:90px">取消</a>
+	</div>
+	
+	<script type="text/javascript">
+		var url;
+		function addFolk(){
+			$('#dlg').dialog('open').dialog('setTitle','添加家庭成员');
+			$('#fm').form('clear');
+			url = '__URL__/addFolk';
+		}
+		function editFolk(){
+			var row = $('#family_info').datagrid('getSelected');
+			if (row){
+				$('#dlg').dialog('open').dialog('setTitle','修改成员信息');
+				$('#fm').form('load',row);
+				url = '__URL__/updateFolk/id/'+row.id;
+			}
+		}
+		function saveFolk(){
+			$('#fm').form('submit',{
+				url: url,
+				onSubmit: function(){
+					return $(this).form('validate');
+				},
+				success: function(result){
+					var result = eval('('+result+')');
+					if (result.errorMsg){
+						$.messager.alert('错误信息',result.errorMsg,'error');
+					} else {
+						$('#dlg').dialog('close');		// close the dialog
+						$.messager.show({
+							title:'消息',
+							msg:'保存成功'
+						});
+						$('#family_info').datagrid('reload');	// reload the user data
+					}
+				}
+			});
+		}
+		function delFolk(){
+			var row = $('#family_info').datagrid('getSelected');
+			if (row){
+				$.messager.confirm('确认消息','确定删除该条信息么?',function(r){
+					if (r){
+						$.post('__URL__/delFolk',{id:row.id},function(result){
+							if (result.success){
+								$('#family_info').datagrid('reload');	// reload the data
+								$.messager.show({
+									title:'消息',
+									msg:'删除成功！',
+									timeout:1500
+								});
+							} else {
+								$.messager.alert('错误信息',result.errorMsg,'error');
+							}
+						},'json');
+					}
+				});
+			}
+		}
+	</script>
+</body>
+</html>
