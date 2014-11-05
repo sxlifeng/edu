@@ -1,17 +1,17 @@
-<!DOCTYPE html>
+<?php if (!defined('THINK_PATH')) exit();?><!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8"/>
 <title>学生家庭信息</title>
-<link rel="stylesheet" type="text/css" href="__PUBLIC__/Js/easyui/themes/default/easyui.css"/>
-<link rel="stylesheet" type="text/css" href="__PUBLIC__/Js/easyui/themes/icon.css"/>
-<link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/my.css"/>
-<script type="text/javascript" src="__PUBLIC__/Js/easyui/jquery.min.js"></script>
-<script type="text/javascript" src="__PUBLIC__/Js/easyui/jquery.easyui.min.js"></script>
-<script type="text/javascript" src="__PUBLIC__/Js/easyui/locale/easyui-lang-zh_CN.js"></script>
+<link rel="stylesheet" type="text/css" href="/edu/Public/Js/easyui/themes/default/easyui.css"/>
+<link rel="stylesheet" type="text/css" href="/edu/Public/Js/easyui/themes/icon.css"/>
+<link rel="stylesheet" type="text/css" href="/edu/Public/Css/my.css"/>
+<script type="text/javascript" src="/edu/Public/Js/easyui/jquery.min.js"></script>
+<script type="text/javascript" src="/edu/Public/Js/easyui/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="/edu/Public/Js/easyui/locale/easyui-lang-zh_CN.js"></script>
 <script type="text/javascript">
 $(document).ready(
-$.post("__URL__/stuFamilyJson",function(data){var data1=eval("("+data+")");console.log(data1)}));
+$.post("/edu/index.php/Home/Student/stuFamilyJson",function(data){var data1=eval("("+data+")");console.log(data1)}));
 </script>
 </head>
 <body>
@@ -22,7 +22,7 @@ $.post("__URL__/stuFamilyJson",function(data){var data1=eval("("+data+")");conso
 				rownumbers:true,
 				singleSelect: true,
 				toolbar: '#toolbar',
-				url: '__URL__/stuFamilyJson',
+				url: '/edu/index.php/Home/Student/stuFamilyJson',
 				method:'get',	
 			">
 		<thead>
@@ -46,7 +46,7 @@ $.post("__URL__/stuFamilyJson",function(data){var data1=eval("("+data+")");conso
 	
 	<div id="dlg" class="easyui-dialog" style="width:400px;height:320px;padding:10px 20px" closed="true" buttons="#dlg-buttons">
 		<div class="ftitle">成员信息</div>
-		<form id="fm" method="post" action='__URL__/addFolk'>
+		<form id="fm" method="post" action='/edu/index.php/Home/Student/addFolk'>
 			<div class="fitem">
 				<label>姓名:</label>
 				<input name="folkName" class="easyui-textbox" required="true" />
@@ -91,14 +91,14 @@ $.post("__URL__/stuFamilyJson",function(data){var data1=eval("("+data+")");conso
 		function addFolk(){
 			$('#dlg').dialog('open').dialog('setTitle','添加家庭成员');
 			$('#fm').form('clear');
-			url = '__URL__/addFolk';
+			url = '/edu/index.php/Home/Student/addFolk';
 		}
 		function editFolk(){
 			var row = $('#family_info').datagrid('getSelected');
 			if (row){
 				$('#dlg').dialog('open').dialog('setTitle','修改成员信息');
 				$('#fm').form('load',row);
-				url = '__URL__/updateFolk/id/'+row.id;
+				url = '/edu/index.php/Home/Student/updateFolk/id/'+row.id;
 			}
 		}
 		function saveFolk(){
@@ -127,7 +127,7 @@ $.post("__URL__/stuFamilyJson",function(data){var data1=eval("("+data+")");conso
 			if (row){
 				$.messager.confirm('确认消息','确定删除该条信息么?',function(r){
 					if (r){
-						$.post('__URL__/delFolk',{id:row.id},function(result){
+						$.post('/edu/index.php/Home/Student/delFolk',{id:row.id},function(result){
 							if (result.success){
 								$('#family_info').datagrid('reload');	// reload the data
 								$.messager.show({

@@ -1,0 +1,86 @@
+<?php if (!defined('THINK_PATH')) exit();?><!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>修改密码</title>
+<link rel="stylesheet" type="text/css" href="/edu/Public/Js/easyui/themes/default/easyui.css">
+<link rel="stylesheet" type="text/css" href="/edu/Public/Js/easyui/themes/icon.css">
+<link rel="stylesheet" type="text/css" href="/edu/Public/Css/my.css">
+<script type="text/javascript" src="/edu/Public/Js/easyui/jquery.min.js"></script>
+<script type="text/javascript" src="/edu/Public/Js/easyui/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="/edu/Public/Js/easyui/locale/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript">
+$.extend($.fn.validatebox.defaults.rules, {    
+    minLength: {    
+        validator: function(value, param){    
+            return value.length >= param[0];    
+        },    
+        message: '密码不能少于{0}位'   
+    },
+    equals: {    
+        validator: function(value,param){    
+            return value == $(param[0]).val();    
+        },    
+        message: '两次输入密码不一致'   
+    },
+    noEquals: {    
+        validator: function(value,param){    
+            return value != $(param[0]).val();    
+        },    
+        message: '新密码不能与旧密码一样'   
+    }
+}); 
+</script>
+</head>
+<body id="change_pwd">
+<form action="/edu/index.php/Home/Common/updatePwd" name="form1" class='easyui-form' id="form1" method="post"  data-options="novalidate:true">
+<table cellspacing="0" cellpadding="0" id="change_pwd_table">
+	<tbody>		
+		<tr class="rowodd">
+			<td class="tdname">账号：</td>
+			<td class="tdvalue"><?php echo ($userNum); ?></td>			
+		</tr>
+		<tr class="roweven">
+			<td class="tdname">旧密码：</td>
+			<td class="tdvalue"><input class="easyui-validatebox textbox" type="password" name="oldPwd" id="oldPwd" data-options="required:true" value="<?php echo ($graduProject['ProjectKey']); ?>" /></td>			
+		</tr>
+		<tr class="rowodd">
+			<td class="tdname">新密码：</td>
+			<td class="tdvalue"><input class="easyui-validatebox textbox" type="password" name="newPwd" id="newPwd" data-options="required:true,validType:['minLength[6]',,'noEquals[\'#oldPwd\']']" value="<?php echo ($graduProject['ProjectName']); ?>"/></td>			
+		</tr>
+		<tr class="roweven">
+			<td class="tdname">确认密码：</td>
+			<td class="tdvalue"><input class="easyui-validatebox textbox" type="password" name="rPwd" data-options="required:true" validType="equals['#newPwd']" value="<?php echo ($graduProject['ProjectKey']); ?>" /></td>			
+		</tr>				
+	</tbody>
+</table>
+<div class="submit_container2">
+	<a href="javascript:void(0)" class="easyui-linkbutton submit_button" data-options="iconCls:'icon-ok',size:'large'" onclick="submitForm()">保存</a> 
+</div>
+</form>
+<script type="text/javascript">
+function submitForm() {
+	$.messager.progress();
+	$('#form1').form('submit',{
+		onSubmit:function(){
+			var isValid = $(this).form('enableValidation').form('validate');
+			if (!isValid){
+				$.messager.progress('close');	// 如果表单是无效的则隐藏进度条
+			}
+			return isValid;	// 返回false终止表单提交
+		},													
+		success:function(data){
+			$.messager.progress('close');	// 如果提交成功则隐藏进度条
+			var data = eval('(' + data + ')');
+		    if(data.code==0){
+        		$.messager.show({title:'消息',msg:data.message+"  1秒后刷新页面...",timeout:2000});
+        		window.setTimeout('location.reload()',1500);
+        	}else{
+        		$.messager.alert('错误提示',data.message,'error');
+        	}									           
+	    }
+	});
+}
+</script>
+</body>
+</html>

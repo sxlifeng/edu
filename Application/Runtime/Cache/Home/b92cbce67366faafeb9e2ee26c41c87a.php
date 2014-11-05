@@ -1,0 +1,11 @@
+<?php if (!defined('THINK_PATH')) exit();?><!DOCTYPE html>
+<html>
+	<head>
+		<title>教务管理系统</title>
+	</head>
+	<body>
+		<div id="tabs" class="easyui-tabs"  fit="true" border="false" >
+			<div title="欢迎使用" style="padding:20px;overflow:hidden;" ></div>
+		</div>
+	</body>
+</html>

@@ -231,7 +231,7 @@ body{font-size:12px; font-family:Verdana,Arial,Helvetica,sans-serif;  z-index:1}
 .easyui-accordion ul li div.selected a{color:#416AA3; font-weight:bold;}
 
 /*左侧菜单图标*/
-.icon{ background:url(../image/tabicons.png) no-repeat;width:18px; line-height:18px; display:inline-block;}
+.icon{ background:url(../Image/tabicons.png) no-repeat;width:18px; line-height:18px; display:inline-block;}
 .icon-sys{ background-position:0px -200px;}
 .icon-set{ background-position:-380px -200px;}
 .icon-add1{background-position: -20px 0px;}

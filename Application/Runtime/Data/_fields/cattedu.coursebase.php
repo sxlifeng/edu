@@ -1,0 +1,1 @@
+a:8:{i:0;s:2:"id";i:1;s:7:"cou_num";i:2;s:8:"cou_name";i:3;s:15:"cou_depart_name";i:4;s:8:"cou_hour";i:5;s:10:"cou_credit";s:3:"_pk";s:2:"id";s:5:"_type";a:6:{s:2:"id";s:7:"int(11)";s:7:"cou_num";s:11:"varchar(15)";s:8:"cou_name";s:11:"varchar(30)";s:15:"cou_depart_name";s:11:"varchar(20)";s:8:"cou_hour";s:5:"float";s:10:"cou_credit";s:5:"float";}}

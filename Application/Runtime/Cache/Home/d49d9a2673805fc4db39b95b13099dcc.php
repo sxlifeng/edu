@@ -1,14 +1,14 @@
-<!DOCTYPE html>
+<?php if (!defined('THINK_PATH')) exit();?><!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>学生选课信息</title>
-<link rel="stylesheet" type="text/css" href="__PUBLIC__/Js/easyui/themes/default/easyui.css"/>
-<link rel="stylesheet" type="text/css" href="__PUBLIC__/Js/easyui/themes/icon.css"/>
-<link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/my.css"/>
-<script type="text/javascript" src="__PUBLIC__/Js/easyui/jquery.min.js"></script>
-<script type="text/javascript" src="__PUBLIC__/Js/easyui/jquery.easyui.min.js"></script>
-<script type="text/javascript" src="__PUBLIC__/Js/easyui/locale/easyui-lang-zh_CN.js"></script>
+<link rel="stylesheet" type="text/css" href="/edu/Public/Js/easyui/themes/default/easyui.css"/>
+<link rel="stylesheet" type="text/css" href="/edu/Public/Js/easyui/themes/icon.css"/>
+<link rel="stylesheet" type="text/css" href="/edu/Public/Css/my.css"/>
+<script type="text/javascript" src="/edu/Public/Js/easyui/jquery.min.js"></script>
+<script type="text/javascript" src="/edu/Public/Js/easyui/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="/edu/Public/Js/easyui/locale/easyui-lang-zh_CN.js"></script>
 </head>
 <body>
 	<table id="select_course" class="easyui-datagrid" title="选课信息" style="width:100%;height:auto"
@@ -18,7 +18,7 @@
 				rownumbers:true,
 				singleSelect: true,
 				toolbar: '#toolbar',
-				url: '__URL__/selectedCourseJson',
+				url: '/edu/index.php/Home/Student/selectedCourseJson',
 				method: 'get'				
 			">
 		<thead>
@@ -92,14 +92,14 @@
 		function addCourse(){
 			$('#dlg').dialog('open').dialog('setTitle','添加选课信息');
 			$('#fm').form('clear');
-			url = '__URL__/addCourse';
+			url = '/edu/index.php/Home/Student/addCourse';
 		}
 		function editCourse(){
 			var row = $('#select_course').datagrid('getSelected');
 			if (row){
 				$('#dlg').dialog('open').dialog('setTitle','修改选课信息');
 				$('#fm').form('load',row);
-				url = '__URL__/updateCourse/id/'+row.id;
+				url = '/edu/index.php/Home/Student/updateCourse/id/'+row.id;
 			}
 		}
 		function saveCourse(){
@@ -128,7 +128,7 @@
 			if (row){
 				$.messager.confirm('确认消息','确定删除该选课信息么?',function(r){
 					if (r){
-						$.post('__URL__/delCourse',{id:row.id},function(result){
+						$.post('/edu/index.php/Home/Student/delCourse',{id:row.id},function(result){
 							if (result.success){
 								$('#select_course').datagrid('reload');	// reload the data
 								$.messager.show({
